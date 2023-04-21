@@ -28,7 +28,7 @@ const Header = () => {
         <div>
         </div>
         <div className="flex gap-5 text-lg text-gray-500">
-            <Link to={``}>Home</Link>
+            <Link to={`/`}>Home</Link>
             <Link to={``}>About</Link>
             <Link to={``}>Career</Link>
         </div>
