@@ -13,7 +13,7 @@ const Root = () => {
                 <div className='col-span-3'>
                     <LeftSide />
                 </div>
-                <div className='col-span-6'>
+                <div className='col-span-6 px-10'>
                     <Outlet />
                 </div>
                 <div className='col-span-3'>
