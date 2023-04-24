@@ -4,11 +4,11 @@ import { FaBookmark, FaEye, FaRegStar, FaShareAlt, FaStar } from "react-icons/fa
 import Rating from "react-rating";
 import { Link } from "react-router-dom";
 
-const NewsCard = ({ news }) => {
+const   NewsCard = ({ news }) => {
   const { _id, title, author, details, image_url, rating, total_view } = news;
   return (
     <div className="border-2 mb-10 rounded-lg">
-      <did className="flex items-center justify-between px-5 py-3 bg-red-50">
+      <div className="flex items-center justify-between px-5 py-3 bg-red-50">
         <div className="flex gap-3 items-center">
           <img className="w-10 rounded-full" src={author?.img} alt="" />
           <div>
@@ -22,7 +22,7 @@ const NewsCard = ({ news }) => {
           <FaBookmark className="text-xl" />
           <FaShareAlt className="text-xl" />
         </div>
-      </did>
+      </div>
 
       <div className="mb-5 px-5">
         <div>
