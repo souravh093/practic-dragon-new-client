@@ -1,50 +1,41 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [url, setUrl] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+  const { createUser } = useContext(AuthContext);
 
-  const handleNameChange = (event) => {
-    setName(event.target.value);
-  };
-
-  const handleUrlChange = (event) => {
-    setUrl(event.target.value);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleConfirmPasswordChange = (event) => {
-    setConfirmPassword(event.target.value);
-  };
-
-  const handleAgreeToTermsChange = (event) => {
-    setAgreeToTerms(event.target.checked);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSignUp = (event) => {
     event.preventDefault();
+    const form = event.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const url = form.url.value;
+    const password = form.password.value;
+    const confirmPassword = form.confirmPassword.value;
+    const checkbox = form.agreeToTerms.value;
     if (
       !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
         password
       )
     ) {
-      alert("Please enter strong password");
+      setError("Please enter strong password");
+      return;
     }
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
+      return
     }
+    createUser(email, password)
+      .then((result) => {
+        const createUser = result.user;
+        console.log(createUser);
+        setSuccess('Successfully Register');
+        form.reset()
+      })
+      .catch((error) => setError(error.message));
   };
 
   return (
@@ -57,7 +48,7 @@ const Register = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSignUp}>
             <div>
               <label
                 htmlFor="name"
@@ -72,8 +63,6 @@ const Register = () => {
                   type="text"
                   autoComplete="name"
                   required
-                  value={name}
-                  onChange={handleNameChange}
                   placeholder="Enter your name"
                   className="shadow-sm border-2 py-2 px-2 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
@@ -94,8 +83,6 @@ const Register = () => {
                   type="text"
                   autoComplete="url"
                   required
-                  value={url}
-                  onChange={handleUrlChange}
                   placeholder="Enter your Photo URL"
                   className="shadow-sm border-2 py-2 px-2 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
@@ -116,9 +103,7 @@ const Register = () => {
                   type="email"
                   autoComplete="email"
                   required
-                  value={email}
                   placeholder="Enter email address"
-                  onChange={handleEmailChange}
                   className="shadow-sm border-2 py-2 px-2 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
@@ -138,9 +123,7 @@ const Register = () => {
                   type="password"
                   autoComplete="new-password"
                   required
-                  value={password}
                   placeholder="Enter your password"
-                  onChange={handlePasswordChange}
                   className="shadow-sm border-2 py-2 px-2 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
@@ -160,9 +143,7 @@ const Register = () => {
                   type="password"
                   autoComplete="new-password"
                   required
-                  value={confirmPassword}
                   placeholder="Enter Confirm Password"
-                  onChange={handleConfirmPasswordChange}
                   className="shadow-sm border-2 py-2 px-2 focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                 />
               </div>
@@ -175,8 +156,6 @@ const Register = () => {
                 type="checkbox"
                 required
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                checked={agreeToTerms}
-                onChange={handleAgreeToTermsChange}
               />
               <div className="ml-2 text-sm">
                 <label
@@ -205,6 +184,7 @@ const Register = () => {
             </Link>
           </p>
         </div>
+        <div className="text-center text-red-500 my-2">{error}</div>
       </div>
     </div>
   );
