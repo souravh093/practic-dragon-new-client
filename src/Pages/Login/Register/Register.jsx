@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Provider/AuthProvider";
 
 const Register = () => {
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState('')
-  const { createUser } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const { createUser, updateProfileUser } = useContext(AuthContext);
 
   const handleSignUp = (event) => {
     event.preventDefault();
@@ -16,6 +16,9 @@ const Register = () => {
     const password = form.password.value;
     const confirmPassword = form.confirmPassword.value;
     const checkbox = form.agreeToTerms.value;
+
+    setError("");
+    setSuccess("");
     if (
       !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
         password
@@ -26,14 +29,21 @@ const Register = () => {
     }
     if (password !== confirmPassword) {
       setError("Passwords do not match");
-      return
+      return;
     }
     createUser(email, password)
       .then((result) => {
         const createUser = result.user;
         console.log(createUser);
-        setSuccess('Successfully Register');
-        form.reset()
+        setSuccess("Successfully Register");
+        updateProfileUser(name, url)
+          .then(() => {
+            console.log("profile updated");
+          })
+          .catch((error) => {
+            setError(error.message);
+          });
+        form.reset();
       })
       .catch((error) => setError(error.message));
   };
@@ -185,6 +195,7 @@ const Register = () => {
           </p>
         </div>
         <div className="text-center text-red-500 my-2">{error}</div>
+        <div className="text-center text-blue-500 my-2">{success}</div>
       </div>
     </div>
   );
