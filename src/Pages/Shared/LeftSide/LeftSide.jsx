@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import EditorInsights from "../../News/EditorInsights/EditorInsights";
 import EditorInsights2 from "../../News/EditorInsights/EditorInsights2";
 
 const LeftSide = () => {
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/categories")
+    fetch("https://practice-dragon-server-theta.vercel.app/categories")
       .then((res) => res.json())
       .then((data) => setCategories(data));
   }, []);

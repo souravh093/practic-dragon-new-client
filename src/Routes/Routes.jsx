@@ -11,26 +11,26 @@ import TermsAndCondition from "../Pages/Shared/TermsAndCondition/TermsAndConditi
 
 const router = createBrowserRouter([
   {
-    path: '/', 
+    path: "/",
     element: <LoginLayout></LoginLayout>,
     children: [
       {
-        path: '/',
-        element: <Navigate to="/category/0" />
+        path: "/",
+        element: <Navigate to="/category/0" />,
       },
       {
-        path: '/login',
-        element: <Login />
+        path: "/login",
+        element: <Login />,
       },
       {
-        path: '/register',
-        element: <Register />
+        path: "/register",
+        element: <Register />,
       },
       {
-        path: '/terms',
-        element: <TermsAndCondition />
-      }
-    ]
+        path: "/terms",
+        element: <TermsAndCondition />,
+      },
+    ],
   },
   {
     path: "/category",
@@ -39,7 +39,10 @@ const router = createBrowserRouter([
       {
         path: ":id",
         element: <Category />,
-        loader: ({ params }) => fetch(`http://localhost:5000/categories/${params.id}`),
+        loader: ({ params }) =>
+          fetch(
+            `https://practice-dragon-server-theta.vercel.app/categories/${params.id}`
+          ),
       },
     ],
   },
@@ -49,8 +52,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/news:id",
-        element: <PrivateRoutes><News /></PrivateRoutes>,
-        loader: ({params}) => fetch(`http://localhost:5000/news/${params.id}`)
+        element: (
+          <PrivateRoutes>
+            <News />
+          </PrivateRoutes>
+        ),
+        loader: ({ params }) =>
+          fetch(`https://practice-dragon-server-theta.vercel.app/news/${params.id}`),
       },
     ],
   },
