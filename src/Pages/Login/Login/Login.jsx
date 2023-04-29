@@ -1,30 +1,44 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Provider/AuthProvider";
 
 const Login = () => {
-  const {loggedUser} = useContext(AuthContext)
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const { loggedUser } = useContext(AuthContext);
+  const navigate = useNavigate()
+  const location = useLocation()
+  console.log("login page location", location)
+  const from = location?.state?.from?.pathName
+  console.log(from)
 
   const handleLogin = (event) => {
-    event.preventDefault()
-    const form = event.target
-    const email = form.email.value
-    const password =form.password.value
+    setError("");
+    setSuccess("");
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
 
     loggedUser(email, password)
-      .then(result => {
-        const loggedUser = result.user
-        console.log(loggedUser)
-        form.reset()
-      }).catch(error => {
-        console.log(error.message)
+      .then((result) => {
+        const loggedUser = result.user;
+        console.log(loggedUser);
+        form.reset();
+        setSuccess("Successfully Login")
+        navigate('/category/0')
       })
-  }
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
 
   return (
     <div className="min-h-[calc(100vh-192px)] flex items-center justify-center bg-gray-100">
       <div className="max-w-md w-full px-10 py-20 bg-white rounded-lg shadow-lg">
-        <h2 className="text-center text-2xl font-bold mb-4">Login your account</h2>
+        <h2 className="text-center text-2xl font-bold mb-4">
+          Login your account
+        </h2>
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label
@@ -67,7 +81,14 @@ const Login = () => {
             </button>
           </div>
         </form>
-        <p className="mt-5 text-center text-xs">Don't Have An Account? <Link to="/register" className="text-red-500">Register</Link></p>
+        <p className="mt-5 text-center text-xs">
+          Don't Have An Account?{" "}
+          <Link to="/register" className="text-red-500">
+            Register
+          </Link>
+        </p>
+      <div className="text-center text-red-500 my-2">{error}</div>
+      <div className="text-center text-blue-500 my-2">{success}</div>
       </div>
     </div>
   );

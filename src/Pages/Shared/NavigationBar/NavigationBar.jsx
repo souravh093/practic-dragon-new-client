@@ -4,7 +4,17 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../../../Provider/AuthProvider";
 
 const NavigationBar = () => {
-    const {user} = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
+
+  const handleLogOut = () => {
+    logOut()
+      .then(() => {
+        console.log("successfully Log-out");
+      })
+      .catch((error) => {
+        console.log("Some problem with logout");
+      });
+  };
   return (
     <div className="flex justify-between items-center container mx-auto my-10">
       <div></div>
@@ -16,11 +26,17 @@ const NavigationBar = () => {
       <div className="flex items-center gap-3">
         {user && <FaUserAlt className="text-3xl" />}
         {user ? (
-          <Link className="bg-gray-700 text-white py-2 px-10 text-lg" to={``}>
+          <Link
+            onClick={handleLogOut}
+            className="bg-gray-700 text-white py-2 px-10 text-lg"
+          >
             Logout
           </Link>
         ) : (
-          <Link to="/login" className="bg-gray-700 text-white py-2 px-10 text-lg">
+          <Link
+            to="/login"
+            className="bg-gray-700 text-white py-2 px-10 text-lg"
+          >
             Login
           </Link>
         )}
