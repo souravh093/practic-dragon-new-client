@@ -5,6 +5,7 @@ import { AuthContext } from "../../../Provider/AuthProvider";
 const Register = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [accepted, setAccepted] = useState(false);
   const { createUser, updateProfileUser } = useContext(AuthContext);
 
   const handleSignUp = (event) => {
@@ -46,6 +47,10 @@ const Register = () => {
         form.reset();
       })
       .catch((error) => setError(error.message));
+  };
+
+  const handleAccepted = (event) => {
+    setAccepted(event.target.checked);
   };
 
   return (
@@ -161,6 +166,7 @@ const Register = () => {
 
             <div className="flex items-center">
               <input
+                onClick={handleAccepted}
                 id="agreeToTerms"
                 name="agreeToTerms"
                 type="checkbox"
@@ -172,13 +178,17 @@ const Register = () => {
                   htmlFor="agreeToTerms"
                   className="font-medium text-gray-700"
                 >
-                  I agree to the terms and conditions
+                  I agree to the{" "}
+                  <Link to="/terms" className="text-blue-400">
+                    terms and conditions
+                  </Link>
                 </label>
               </div>
             </div>
 
             <div>
               <button
+                disabled={!accepted}
                 type="submit"
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >

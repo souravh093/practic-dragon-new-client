@@ -8,10 +8,8 @@ const Login = () => {
   const { loggedUser } = useContext(AuthContext);
   const navigate = useNavigate()
   const location = useLocation()
-  console.log("login page location", location)
-  const from = location?.state?.from?.pathName
+  const from = location.state?.from?.pathname || "/category/0"
   console.log(from)
-
   const handleLogin = (event) => {
     setError("");
     setSuccess("");
@@ -26,7 +24,7 @@ const Login = () => {
         console.log(loggedUser);
         form.reset();
         setSuccess("Successfully Login")
-        navigate('/category/0')
+        navigate(from, {replace: true})
       })
       .catch((error) => {
         setError(error.message);
